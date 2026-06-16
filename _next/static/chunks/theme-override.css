@@ -1,189 +1,217 @@
 /* ============================================================================
-   BRIJAMRIT — "Azure" Design System  (premium light-blue SaaS redesign)
+   BRIJAMRIT — "Skyline" Design System  v2  (bold, fresh, modern light-blue)
    ----------------------------------------------------------------------------
-   Strategy: the base build pairs light-surface→dark-text and dark-surface→
-   light-text consistently, so re-mapping the colour TOKENS preserves every
-   contrast relationship. On top of that we override the hard-coded brown/gold
-   values that live in arbitrary utilities, and restyle the component layer
-   (buttons, cards, nav, inputs, footer, shadows, radius, typography).
-   Declared UNLAYERED so it wins over the base @layer theme/utilities.
+   A ground-up visual reinvention delivered purely through CSS (the page is
+   React-hydrated, so DOM/class edits would be reverted — instead we re-map the
+   design tokens and re-compose each component by targeting its existing class
+   signature, using :has() for precise per-section scoping).
+   Declared UNLAYERED so it overrides the base @layer theme/utilities.
    ========================================================================== */
 
 :root, :host {
-  /* ---- Primary text / surfaces: SOFT NAVY → SLATE (was warm brown) -------- */
-  --color-brand-50:  #f4f8fd;
-  --color-brand-100: #e3edf7;   /* hairline borders */
-  --color-brand-200: #c6d8ec;
-  --color-brand-300: #9bb8d9;
-  --color-brand-400: #6589b5;
-  --color-brand-500: #456a96;
-  --color-brand-600: #34547a;   /* logo / muted headings */
-  --color-brand-700: #1f3b63;   /* primary dark — text, dark buttons, footer */
-  --color-brand-800: #16293f;
-  --color-brand-900: #0c1827;
+  /* ---- Dark / text: INDIGO-NAVY ----------------------------------------- */
+  --color-brand-50:#f3f7fe; --color-brand-100:#e4edfb; --color-brand-200:#c5d8f5;
+  --color-brand-300:#98b6ec; --color-brand-400:#6088df; --color-brand-500:#3e62c4;
+  --color-brand-600:#2f4ba3; --color-brand-700:#243a82; --color-brand-800:#1a2a5e;
+  --color-brand-900:#111b3d;
 
-  /* ---- Accent: LIGHT BLUE (was muted gold) — CTAs, highlights, focus ------ */
-  --color-gold-300: #bfe0ff;
-  --color-gold-400: #86c5fb;
-  --color-gold-500: #4aa8f5;    /* primary light blue */
-  --color-gold-600: #2b8fe6;
-  --color-gold-700: #1f73c4;
+  /* ---- Accent: BRIGHT SKY BLUE (primary) -------------------------------- */
+  --color-gold-300:#aee0ff; --color-gold-400:#6cc6ff; --color-gold-500:#2eaaff;
+  --color-gold-600:#0d8ef0; --color-gold-700:#0b73c6;
 
-  /* ---- Supporting: muted TEAL / sky (was olive) — stock, offers ----------- */
-  --color-leaf-50:  #eef7fb;
-  --color-leaf-200: #c3e4f0;
-  --color-leaf-400: #52b4d4;
-  --color-leaf-500: #3098bb;
-  --color-leaf-600: #247a98;
-  --color-leaf-700: #1d6179;
+  /* ---- Supporting: CYAN-TEAL -------------------------------------------- */
+  --color-leaf-50:#ecfaf9; --color-leaf-200:#b9ecec; --color-leaf-400:#45cdcb;
+  --color-leaf-500:#21b3b3; --color-leaf-600:#149494; --color-leaf-700:#11787a;
 
-  /* ---- Neutrals: white + cool light-blue greys (was warm cream) ----------- */
-  --color-cream:      #f7fafd;  /* page background, header */
-  --color-cream-deep: #eaf1f9;  /* alternating sections */
-  --color-ivory:      #ffffff;  /* cards */
-  --color-sand:       #dde9f5;  /* gradient terminus */
+  /* ---- Neutrals: cool, faintly blue ------------------------------------- */
+  --color-cream:#f5f8ff; --color-cream-deep:#e9f0fc; --color-ivory:#ffffff; --color-sand:#d9e6fa;
 
-  /* ---- Larger, softer corners -------------------------------------------- */
-  --radius-xl:  0.875rem;
-  --radius-2xl: 1.25rem;
-  --radius-3xl: 1.75rem;
+  /* ---- Signature gradients ---------------------------------------------- */
+  --grad-primary: linear-gradient(135deg,#2eaaff 0%,#3e62c4 100%);
+  --grad-primary-soft: linear-gradient(135deg,#6cc6ff 0%,#6088df 100%);
+  --grad-ink: linear-gradient(135deg,#243a82 0%,#111b3d 100%);
 
-  /* ---- Typography: refined modern pairing -------------------------------- */
-  --font-playfair: "Sora", "Segoe UI", system-ui, sans-serif;   /* headings */
-  --font-serif:    "Sora", "Segoe UI", system-ui, sans-serif;
-  --font-inter:    "Inter", system-ui, -apple-system, sans-serif; /* body / UI */
-  --font-sans:     "Inter", system-ui, -apple-system, sans-serif;
-  --font-script:   "Space Grotesk", "Sora", sans-serif;          /* wordmark */
-  --default-font-family: var(--font-sans);
+  /* ---- Softer, larger corners ------------------------------------------- */
+  --radius-xl:.9rem; --radius-2xl:1.35rem; --radius-3xl:1.9rem;
+
+  /* ---- Typography: trending grotesque display + clean geometric body ---- */
+  --font-playfair:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-serif:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-inter:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+  --font-sans:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+  --font-script:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif;
+  --default-font-family:var(--font-sans);
 }
 
 /* ============================================================================
-   TYPOGRAPHY SCALE
+   TYPE SCALE
    ========================================================================== */
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-body { font-family: var(--font-sans); letter-spacing: -0.005em; }
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:var(--font-sans);letter-spacing:-.006em;background:var(--color-cream)}
+.font-serif{font-family:var(--font-serif);letter-spacing:-.03em;line-height:1.08;font-weight:700}
+.text-4xl,.text-5xl,.text-6xl{letter-spacing:-.04em;line-height:1.0}
+.text-2xl,.text-3xl{letter-spacing:-.03em;line-height:1.1}
+p{line-height:1.68}.leading-relaxed{line-height:1.72!important}
+.uppercase{letter-spacing:.2em;font-weight:700}
+.font-medium{font-weight:600}
 
-/* Headings — geometric Sora, tightened tracking, confident line-height */
-.font-serif { font-family: var(--font-serif); letter-spacing: -0.02em; line-height: 1.14; }
-.text-4xl, .text-5xl, .text-6xl { letter-spacing: -0.032em; line-height: 1.04; }
-.text-2xl, .text-3xl           { letter-spacing: -0.022em; line-height: 1.12; }
-
-/* Body rhythm + readability */
-p { line-height: 1.65; }
-.leading-relaxed { line-height: 1.7 !important; }
-
-/* Eyebrow / caption labels — airy, premium */
-.uppercase { letter-spacing: 0.18em; font-weight: 600; }
-
-/* Buttons — confident, legible UI weight */
-.font-medium { font-weight: 600; }
-
-/* Wordmark: turn the logo into a custom gradient lockup (header only) */
-header .font-script {
-  font-family: var(--font-script);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  background: linear-gradient(120deg, var(--color-brand-700) 0%, var(--color-gold-600) 55%, var(--color-gold-500) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-}
-/* Decorative script lines elsewhere: clean modern accent */
-.font-script { font-family: var(--font-script); letter-spacing: -0.01em; }
-
-/* ============================================================================
-   SHADOWS — soft, layered, blue-tinted (replace brown defaults)
-   ========================================================================== */
-.shadow-card {
-  --tw-shadow: 0 1px 2px rgba(15,40,75,.04), 0 6px 16px -6px rgba(15,40,75,.10), 0 16px 40px -18px rgba(15,40,75,.14) !important;
-  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
-}
-.shadow-soft {
-  --tw-shadow: 0 8px 22px -10px rgba(15,40,75,.16), 0 28px 64px -28px rgba(15,40,75,.24) !important;
-  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
+/* Gradient wordmark (header + mobile menu) */
+.font-script{
+  font-family:var(--font-script);font-weight:800;letter-spacing:-.045em;
+  background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
 }
 
 /* ============================================================================
-   HEADER / NAVIGATION — glassy, crisp, premium
+   SHADOWS — soft, blue-tinted, layered
    ========================================================================== */
-header.sticky {
-  background: color-mix(in oklab, var(--color-cream) 78%, transparent) !important;
-  border-bottom: 1px solid color-mix(in oklab, var(--color-brand-200) 55%, transparent) !important;
-  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px -18px rgba(15,40,75,.5);
-}
-/* Animated underline on nav links */
-header nav a[href] {
-  position: relative;
-  transition: color .18s ease;
-}
-header nav a[href]::after {
-  content: ""; position: absolute; left: 0; right: 100%; bottom: -4px; height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--color-gold-500), var(--color-gold-600));
-  transition: right .26s cubic-bezier(.4,0,.2,1);
-}
-header nav a[href]:hover::after { right: 0; }
+.shadow-card{--tw-shadow:0 2px 6px -2px rgba(17,27,61,.06),0 12px 28px -10px rgba(17,27,61,.12),0 28px 64px -28px rgba(17,27,61,.16)!important;
+  box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)!important}
+.shadow-soft{--tw-shadow:0 10px 26px -12px rgba(46,170,255,.28),0 34px 70px -30px rgba(17,27,61,.3)!important;
+  box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)!important}
+[class*="shadow-[0_8px_24px"]{box-shadow:0 14px 30px -12px rgba(46,170,255,.5)!important}
 
 /* ============================================================================
-   BUTTONS — gradient fills, soft glow, smooth motion
+   NAVIGATION — floating glass capsule with gradient hairline
    ========================================================================== */
-/* shared smoothing for the pill button component */
-.transition-all.rounded-full { transition: transform .2s cubic-bezier(.4,0,.2,1), box-shadow .25s ease, background-color .2s ease, border-color .2s ease !important; }
-
-/* Primary (dark navy) CTA — e.g. Shop Now, Buy Now */
-.transition-all.bg-brand-700 {
-  background-image: linear-gradient(135deg, var(--color-brand-600) 0%, var(--color-brand-700) 60%, var(--color-brand-800) 100%) !important;
-  box-shadow: 0 10px 26px -12px rgba(15,40,75,.55), inset 0 1px 0 rgba(255,255,255,.08) !important;
+header.sticky{background:transparent!important;border:0!important;backdrop-filter:none!important;padding-top:.7rem;padding-bottom:.1rem}
+header.sticky>div{
+  border-radius:999px;
+  background:color-mix(in oklab,var(--color-ivory) 78%,transparent);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 12px 34px -16px rgba(17,27,61,.4),inset 0 1px 0 rgba(255,255,255,.65);
+  border:1px solid color-mix(in oklab,var(--color-brand-200) 55%,transparent);
+  position:relative;
 }
-.transition-all.bg-brand-700:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px rgba(15,40,75,.6), inset 0 1px 0 rgba(255,255,255,.12) !important; }
-
-/* Accent (light blue) CTA — e.g. Add to Cart, primary actions */
-.transition-all.bg-gold-500 {
-  background-image: linear-gradient(135deg, var(--color-gold-400) 0%, var(--color-gold-500) 55%, var(--color-gold-600) 100%) !important;
-  color: var(--color-brand-900) !important;
-  box-shadow: 0 10px 26px -10px rgba(74,168,245,.55), inset 0 1px 0 rgba(255,255,255,.35) !important;
-}
-.transition-all.bg-gold-500:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -10px rgba(74,168,245,.62), inset 0 1px 0 rgba(255,255,255,.45) !important; }
-
-/* Secondary / outline button — subtle fill on hover */
-.transition-all.border.text-brand-700:hover { background: var(--color-brand-50) !important; }
-
-/* Override the hard-coded brown button shadow utility */
-[class*="shadow-[0_8px_24px"] { box-shadow: 0 10px 26px -12px rgba(15,40,75,.5) !important; }
-
-/* Small round icon buttons get a gentle press feedback */
-.rounded-full.bg-brand-700:not(.transition-all):hover { box-shadow: 0 6px 16px -8px rgba(15,40,75,.6); }
+header.sticky>div::before{content:"";position:absolute;inset:0;border-radius:999px;padding:1px;
+  background:linear-gradient(120deg,rgba(46,170,255,.5),transparent 40%,transparent 60%,rgba(62,98,196,.45));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+/* Nav links become soft pills */
+header nav a[href]{padding:.42rem .85rem;border-radius:999px;transition:background-color .2s,color .2s,transform .2s}
+header nav a[href]:hover{background:color-mix(in oklab,var(--color-gold-500) 14%,transparent);color:var(--color-brand-700)!important;transform:translateY(-1px)}
 
 /* ============================================================================
-   CARDS — crisp white, hairline ring, lift on hover
+   BUTTONS — vivid gradient fills + lift
    ========================================================================== */
-.rounded-3xl.shadow-card, .rounded-2xl.shadow-card {
-  border-radius: var(--radius-3xl);
-  transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s ease !important;
-}
-.group.rounded-3xl:hover, .group.rounded-2xl:hover { box-shadow: 0 18px 44px -20px rgba(15,40,75,.28) !important; }
+.transition-all.rounded-full{transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .25s,filter .2s!important}
+.transition-all.bg-brand-700{background-image:var(--grad-primary)!important;color:#fff!important;
+  box-shadow:0 12px 28px -12px rgba(46,170,255,.55),inset 0 1px 0 rgba(255,255,255,.25)!important}
+.transition-all.bg-brand-700:hover{transform:translateY(-2px);filter:saturate(1.08);box-shadow:0 18px 38px -12px rgba(46,170,255,.62)!important}
+.transition-all.bg-gold-500{background-image:var(--grad-primary)!important;color:#fff!important;
+  box-shadow:0 12px 28px -10px rgba(46,170,255,.55),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.transition-all.bg-gold-500:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(46,170,255,.65)!important}
+.transition-all.border.text-brand-700{border-color:color-mix(in oklab,var(--color-gold-500) 45%,transparent)!important;background:color-mix(in oklab,var(--color-gold-500) 6%,transparent)!important}
+.transition-all.border.text-brand-700:hover{background:color-mix(in oklab,var(--color-gold-500) 14%,transparent)!important;transform:translateY(-2px)}
 
 /* ============================================================================
-   FORMS / INPUTS — clean, light-blue focus
+   HERO — gradient mesh, oversized display type, framed image
    ========================================================================== */
-input, textarea, select {
-  transition: box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
-}
-input:focus, textarea:focus, select:focus {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-gold-500) 28%, transparent) !important;
-}
+section[class*="relative"][class*="overflow-hidden"]:has(h1)>div:first-child{
+  background:radial-gradient(120% 120% at 0% 0%,#eaf3ff 0%,#f5f8ff 45%,#ffffff 100%)!important}
+section[class*="relative"][class*="overflow-hidden"]:has(h1)::before{
+  content:"";position:absolute;width:46rem;height:46rem;right:-14rem;top:-18rem;border-radius:50%;
+  background:radial-gradient(circle,rgba(46,170,255,.30),transparent 62%);filter:blur(8px);pointer-events:none}
+section[class*="relative"][class*="overflow-hidden"]:has(h1)::after{
+  content:"";position:absolute;width:34rem;height:34rem;left:-12rem;bottom:-16rem;border-radius:50%;
+  background:radial-gradient(circle,rgba(62,98,196,.22),transparent 60%);filter:blur(6px);pointer-events:none}
+/* Hero H1 — bigger, tighter, gradient keyword + highlight */
+section:has(h1) h1{font-size:clamp(2.6rem,6vw,4.6rem)!important;line-height:.98!important;letter-spacing:-.045em}
+section:has(h1) h1 span[class*="text-gold-600"]{
+  background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;position:relative}
+/* Eyebrow badge → glassy gradient-ringed chip */
+section:has(h1) span[class*="ring-gold-300"]{
+  background:rgba(255,255,255,.7)!important;backdrop-filter:blur(6px);
+  box-shadow:0 6px 18px -10px rgba(46,170,255,.6);border:1px solid color-mix(in oklab,var(--color-gold-400) 60%,transparent)!important;
+  --tw-ring-color:transparent!important}
+/* Stat numbers → gradient */
+section:has(h1) p[class*="text-2xl"][class*="font-serif"]{
+  background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+/* Hero image gets an asymmetric frame + glow ring */
+section:has(h1) img{border-radius:2.2rem 2.2rem 2.2rem 5rem!important;
+  box-shadow:0 30px 70px -30px rgba(17,27,61,.45),0 0 0 1px rgba(255,255,255,.6);outline:6px solid rgba(255,255,255,.55);outline-offset:-2px}
 
 /* ============================================================================
-   DECORATIVE GLOW — recolour the hard-coded gold radial in dark sections
+   SECTION EYEBROWS + "View All" — pill accent
    ========================================================================== */
-[class*="radial-gradient(80%_60%_at_50%_0%,#cca74f"] {
-  background: radial-gradient(80% 60% at 50% 0%, #4aa8f5 0%, transparent 60%) !important;
-  opacity: .25 !important;
-}
+p[class*="uppercase"][class*="text-gold-600"]{
+  display:inline-block;padding:.28rem .7rem;border-radius:999px;
+  background:color-mix(in oklab,var(--color-gold-500) 12%,transparent);
+  color:var(--color-gold-700)!important;letter-spacing:.16em}
+a[class*="text-gold-600"][class*="font-medium"]:hover{transform:translateX(2px);transition:transform .2s}
 
 /* ============================================================================
-   ACCESSIBILITY + GLOBAL POLISH
+   SHOP BY CATEGORY — circular avatars → modern rounded image tiles
    ========================================================================== */
-::selection { background: var(--color-gold-300); color: var(--color-brand-900); }
-:focus-visible { outline: 2px solid var(--color-gold-600); outline-offset: 2px; }
-html { accent-color: var(--color-gold-500); }
-img { image-rendering: auto; }
+a[class*="group"][class*="flex-col"][class*="items-center"] div[class*="rounded-full"][class*="ring-gold-300"]{
+  border-radius:1.5rem!important;width:100%!important;height:auto!important;aspect-ratio:1/1!important;
+  max-width:none!important;--tw-ring-color:transparent!important;
+  box-shadow:0 12px 30px -16px rgba(17,27,61,.35);border:1px solid color-mix(in oklab,var(--color-brand-200) 60%,transparent);
+  position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s}
+a[class*="group"][class*="flex-col"][class*="items-center"] div[class*="rounded-full"][class*="ring-gold-300"]::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(to top,rgba(17,27,61,.32),transparent 55%);pointer-events:none}
+a[class*="group"][class*="flex-col"][class*="items-center"]:hover div[class*="rounded-full"][class*="ring-gold-300"]{
+  transform:translateY(-6px) scale(1.02);box-shadow:0 22px 44px -18px rgba(46,170,255,.5)}
+/* Category label → bold chip */
+a[class*="group"][class*="flex-col"][class*="items-center"] span{font-family:var(--font-serif);font-weight:700;letter-spacing:-.01em;color:var(--color-brand-700)}
+
+/* ============================================================================
+   FEATURED PRODUCTS — premium floating cards
+   ========================================================================== */
+div[class*="rounded-3xl"][class*="bg-ivory"][class*="shadow-card"]:has(.aspect-square){
+  border-radius:1.9rem!important;background:#fff!important;
+  --tw-ring-color:color-mix(in oklab,var(--color-brand-200) 55%,transparent)!important;
+  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,outline-color .35s!important;outline:2px solid transparent}
+div[class*="rounded-3xl"][class*="bg-ivory"][class*="shadow-card"]:has(.aspect-square):hover{
+  transform:translateY(-8px);outline-color:color-mix(in oklab,var(--color-gold-500) 55%,transparent)}
+/* Image plinth — soft sky wash behind product */
+div[class*="rounded-3xl"]:has(.aspect-square) .aspect-square{background:radial-gradient(120% 90% at 50% 10%,#eaf4ff,#f4f8ff)!important}
+/* Discount badge → gradient pill */
+div[class*="rounded-3xl"]:has(.aspect-square) span[class*="bg-leaf-500"]{
+  background-image:var(--grad-primary)!important;box-shadow:0 8px 18px -8px rgba(46,170,255,.6)}
+/* Wishlist button → frosted glass */
+div[class*="rounded-3xl"]:has(.aspect-square) button[class*="bg-cream"]{
+  background:rgba(255,255,255,.78)!important;backdrop-filter:blur(8px);box-shadow:0 6px 16px -8px rgba(17,27,61,.4)}
+div[class*="rounded-3xl"]:has(.aspect-square) button[class*="bg-cream"]:hover{color:var(--color-gold-600)!important}
+
+/* ============================================================================
+   OUR PROMISE — modern tiles with gradient icon + top accent + glass hover
+   ========================================================================== */
+div[class*="rounded-3xl"][class*="p-6"]:has(>span[class*="rounded-2xl"][class*="bg-gold-500"]){
+  position:relative;border-radius:1.6rem!important;overflow:hidden;
+  background:linear-gradient(180deg,#ffffff,#f7faff)!important;
+  --tw-ring-color:color-mix(in oklab,var(--color-brand-200) 50%,transparent)!important;
+  transition:transform .3s,box-shadow .3s}
+div[class*="rounded-3xl"][class*="p-6"]:has(>span[class*="rounded-2xl"][class*="bg-gold-500"])::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--grad-primary)}
+div[class*="rounded-3xl"][class*="p-6"]:has(>span[class*="rounded-2xl"][class*="bg-gold-500"]):hover{
+  transform:translateY(-6px);box-shadow:0 22px 48px -22px rgba(46,170,255,.4)}
+/* Gradient icon chip */
+span[class*="rounded-2xl"][class*="bg-gold-500"]{
+  background:var(--grad-primary)!important;color:#fff!important;border-radius:1.1rem!important;
+  box-shadow:0 10px 22px -10px rgba(46,170,255,.6)}
+
+/* ============================================================================
+   TESTIMONIALS — gradient quote, accent rail, lift
+   ========================================================================== */
+figure[class*="rounded-3xl"]:has(.lucide-quote){
+  position:relative;border-radius:1.6rem!important;overflow:hidden;background:#fff!important;
+  --tw-ring-color:color-mix(in oklab,var(--color-brand-200) 50%,transparent)!important;
+  transition:transform .3s,box-shadow .3s}
+figure[class*="rounded-3xl"]:has(.lucide-quote)::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--grad-primary)}
+figure[class*="rounded-3xl"]:has(.lucide-quote):hover{transform:translateY(-6px);box-shadow:0 22px 48px -22px rgba(17,27,61,.32)}
+.lucide-quote{color:var(--color-gold-500)!important;opacity:.9}
+
+/* ============================================================================
+   FORMS
+   ========================================================================== */
+input,textarea,select{transition:box-shadow .2s,border-color .2s,background-color .2s}
+input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px color-mix(in oklab,var(--color-gold-500) 32%,transparent)!important}
+
+/* ============================================================================
+   GLOBAL POLISH + A11y
+   ========================================================================== */
+::selection{background:var(--color-gold-300);color:var(--color-brand-900)}
+:focus-visible{outline:2px solid var(--color-gold-600);outline-offset:2px}
+html{accent-color:var(--color-gold-500)}
