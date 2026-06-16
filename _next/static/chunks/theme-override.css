@@ -1,0 +1,58 @@
+/* ============================================================
+   Brijamrit — Unique re-theme
+   Indigo + Saffron + Teal palette, modern editorial typography.
+   Declared UNLAYERED so it overrides the base @layer theme tokens.
+   ============================================================ */
+
+:root, :host {
+  /* ---- Primary scale: deep INDIGO (replaces warm brown "brand") ---- */
+  --color-brand-50:  #eef0fb;
+  --color-brand-100: #dde2f5;
+  --color-brand-200: #bcc6ec;
+  --color-brand-300: #93a1dd;
+  --color-brand-400: #6878c6;
+  --color-brand-500: #4857a6;
+  --color-brand-600: #36438a;
+  --color-brand-700: #28336b;
+  --color-brand-800: #1b234d;
+  --color-brand-900: #111634;
+
+  /* ---- Accent scale: vibrant SAFFRON / marigold (replaces muted gold) ---- */
+  --color-gold-300: #ffd271;
+  --color-gold-400: #fbb838;
+  --color-gold-500: #f0a015;
+  --color-gold-600: #cf820a;
+  --color-gold-700: #a96809;
+
+  /* ---- Secondary scale: TEAL (replaces olive "leaf") ---- */
+  --color-leaf-50:  #e6f4f2;
+  --color-leaf-200: #b4ddd7;
+  --color-leaf-400: #45b1a4;
+  --color-leaf-500: #2b9588;
+  --color-leaf-600: #1f786e;
+  --color-leaf-700: #195e57;
+
+  /* ---- Neutrals: cool MIST (replaces warm cream/sand/ivory) ---- */
+  --color-cream:      #f5f7fc;
+  --color-cream-deep: #e8ecf6;
+  --color-ivory:      #fbfcff;
+  --color-sand:       #dbe1f1;
+
+  /* ---- Typography: modern editorial pairing ---- */
+  --font-playfair: "Fraunces", Georgia, serif;
+  --font-serif:    "Fraunces", Georgia, serif;
+  --font-inter:    "Manrope", system-ui, -apple-system, sans-serif;
+  --font-sans:     "Manrope", system-ui, -apple-system, sans-serif;
+  --font-script:   "Great Vibes", cursive;
+  --default-font-family: var(--font-sans);
+}
+
+/* Headings get a touch more character from Fraunces */
+.font-serif { letter-spacing: -0.01em; }
+
+/* Script logo: Great Vibes sits small, nudge it up for presence */
+.font-script { font-size: 1.18em; line-height: 1; }
+
+/* Cohesive selection + accents in the new palette */
+::selection { background: var(--color-gold-300); color: var(--color-brand-900); }
+html { accent-color: var(--color-gold-500); }
